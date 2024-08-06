@@ -1,0 +1,14 @@
+﻿@model Web.ViewModels.ManageRolesViewModel
+
+<h2>Manage Roles for @Model.Name</h2>
+
+<form asp-action="ManageRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div class="form-group">
+        <label for="roles">Roles</label>
+        <select asp-for="SelectedRoles" asp-items="@(new SelectList(Model.Roles))" multiple="multiple" class="form-control" id="roles">
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Web.ViewModels.Tickets.TicketViewModel>
+
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<h1>Tickets</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created By</th>
+            <th>Created Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Title</td>
+                <td>@ticket.Description</td>
+                <td>@ticket.CreatedBy</td>
+                <td>@ticket.CreatedDate.ToString("g")</td>
+                <td>@ticket.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>
