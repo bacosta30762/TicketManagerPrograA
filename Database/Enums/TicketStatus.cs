@@ -8,10 +8,10 @@ namespace Database.Enums
 {
     public enum TicketStatus
     {
-        Pending,
-        Received,
         InProgress,
-        Completed,
-        Closed
+        Approved,
+        Refused,
+        Closed,
+        Deleted
     }
 }

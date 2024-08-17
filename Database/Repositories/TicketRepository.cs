@@ -1,4 +1,5 @@
-﻿using Database.Interfaces;
+﻿using Database.Enums;
+using Database.Interfaces;
 using Database.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,6 +62,22 @@ namespace Database.Repositories
             }
 
             throw new KeyNotFoundException($"No se encontró el Ticket ID:{ticket.Id}.");
+        }
+
+        public async Task UpdateStatusAsync(int id, TicketStatus status)
+        {
+            var ticketInDb = await _context.Tickets.FindAsync(id);
+
+            if (ticketInDb != null)
+            {
+                ticketInDb.Status = status;
+                ticketInDb.UpdatedAt = DateTime.Now;
+
+                _context.Tickets.Update(ticketInDb);
+                await _context.SaveChangesAsync();
+            }
+
+            throw new KeyNotFoundException($"No se encontró el Ticket ID:{id}.");
         }
 
         public async Task DeleteAsync(int ticketId)

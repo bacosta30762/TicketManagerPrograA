@@ -11,5 +11,7 @@ namespace Database
         public ApplicationDbContext() { }
 
         public DbSet<Ticket> Tickets { get; set; }
+
+        public DbSet<History> TicketsHistory { get; set; }
     }
 }

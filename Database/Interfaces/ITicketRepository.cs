@@ -1,4 +1,5 @@
-﻿using Database.Models;
+﻿using Database.Enums;
+using Database.Models;
 
 namespace Database.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Database.Interfaces
         Task<Ticket> GetByIdAsync(int ticketId);
         Task<IEnumerable<Ticket>> GetByUserIdAsync(string userId);
         Task UpdateAsync(Ticket ticket);
+        Task UpdateStatusAsync(int id, TicketStatus status);
     }
 }

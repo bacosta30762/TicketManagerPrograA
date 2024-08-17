@@ -23,6 +23,7 @@ namespace Database
 
             // Repositorios
             services.AddTransient<ITicketRepository, TicketRepository>();
+            services.AddTransient<IHistoryRepository, HistoryRepository>();
         }
     }
 }
