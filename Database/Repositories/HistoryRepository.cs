@@ -1,5 +1,7 @@
 ﻿using Database.Interfaces;
 using Database.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections;
 
 namespace Database.Repositories
 {
@@ -16,6 +18,14 @@ namespace Database.Repositories
         {
             _context.TicketsHistory.Add(history);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task <IEnumerable<History>> ListAsync(int ticketid)
+        {
+            var TicketHistory = await _context.TicketsHistory.Where(h => h.TicketId == ticketid)
+                .ToListAsync();
+
+            return TicketHistory;
         }
 
     }

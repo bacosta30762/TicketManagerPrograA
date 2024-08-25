@@ -80,6 +80,12 @@ namespace Business.Services
 
         }
 
+        public async Task<IEnumerable<History>> ListHistoryAsync(int ticketId)
+        {
+            return await _ticketHistory.ListAsync(ticketId);
+
+        }
+
 
     }
 }

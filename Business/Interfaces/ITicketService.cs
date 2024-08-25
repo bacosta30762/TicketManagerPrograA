@@ -8,6 +8,7 @@ namespace Business.Interfaces
         Task<int> ApproveAsync(string changedById, int ticketId);
         Task<IEnumerable<Ticket>> GetAllAsync();
         Task<IEnumerable<Ticket>> GetByUserIdAsync(string userId);
+        Task<IEnumerable<History>> ListHistoryAsync(int ticketId);
         Task<int> RejectAsync(string changedById, int ticketId);
     }
 }

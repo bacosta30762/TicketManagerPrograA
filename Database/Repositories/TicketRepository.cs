@@ -68,29 +68,29 @@ namespace Database.Repositories
         {
             var ticketInDb = await _context.Tickets.FindAsync(id);
 
-            if (ticketInDb != null)
+            if (ticketInDb == null)
             {
-                ticketInDb.Status = status;
-                ticketInDb.UpdatedAt = DateTime.Now;
-
-                _context.Tickets.Update(ticketInDb);
-                await _context.SaveChangesAsync();
+                throw new KeyNotFoundException($"No se encontró el Ticket ID:{id}.");
             }
 
-            throw new KeyNotFoundException($"No se encontró el Ticket ID:{id}.");
+            ticketInDb.Status = status;
+            ticketInDb.UpdatedAt = DateTime.Now;
+
+            _context.Tickets.Update(ticketInDb);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int ticketId)
         {
             var ticketInDb = await _context.Tickets.FindAsync(ticketId);
 
-            if (ticketInDb != null)
+            if (ticketInDb == null)
             {
-                _context.Tickets.Remove(ticketInDb);
-                await _context.SaveChangesAsync();
+                throw new KeyNotFoundException($"No se encontró el Ticket ID:{ticketId}.");
             }
 
-            throw new KeyNotFoundException($"No se encontró el Ticket ID:{ticketId}.");
+            _context.Tickets.Remove(ticketInDb);
+            await _context.SaveChangesAsync();
         }
     }
 

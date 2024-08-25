@@ -2,30 +2,86 @@
 
 @{
     ViewData["Title"] = "Tickets";
+    var isAdmin = ViewBag.IsAdmin as bool?;
 }
 
 <h1>Tickets</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Created By</th>
-            <th>Created Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ticket in Model)
-        {
-            <tr>
-                <td>@ticket.Title</td>
-                <td>@ticket.Description</td>
-                <td>@ticket.CreatedBy</td>
-                <td>@ticket.CreatedDate.ToString("g")</td>
-                <td>@ticket.Status</td>
-            </tr>
+<div class="row">
+    <div class="col-md-9">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Created By</th>
+                    <th>Created Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model)
+                {
+                    <tr class="ticket-row" data-ticket-id="@ticket.Id">
+                        <td>@ticket.Title</td>
+                        <td>@ticket.Description</td>
+                        <td>@ticket.CreatedBy</td>
+                        <td>@ticket.CreatedDate.ToString("g")</td>
+                        <td>@ticket.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @if (isAdmin == true)
+    {
+        <div class="col-md-3">
+            <h3>Acciones</h3>
+            <form id="approve-form" method="post" action="@Url.Action("Approve", "Ticket")" style="display:inline;">
+                <input type="hidden" name="ticketId" id="selectedTicketIdApprove" value="" />
+                <button type="submit" class="btn btn-success" disabled>Aprobar</button>
+            </form>
+            <form id="reject-form" method="post" action="@Url.Action("Reject", "Ticket")" style="display:inline;">
+                <input type="hidden" name="ticketId" id="selectedTicketIdReject" value="" />
+                <button type="submit" class="btn btn-danger" disabled>Rechazar</button>
+            </form>
+            <form id="history-form" method="get" action="@Url.Action("History", "Ticket")" style="display:inline;">
+                <input type="hidden" name="ticketId" id="selectedTicketIdHistory" value="" />
+                <button type="submit" class="btn btn-info" disabled>Historial</button>
+            </form>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.ticket-row').forEach(row => {
+            row.addEventListener('click', function() {
+                var ticketId = this.getAttribute('data-ticket-id');
+                document.getElementById('selectedTicketIdApprove').value = ticketId;
+                document.getElementById('selectedTicketIdReject').value = ticketId;
+                document.getElementById('selectedTicketIdHistory').value = ticketId;
+
+                
+                document.querySelector('#approve-form button').disabled = false;
+                document.querySelector('#reject-form button').disabled = false;
+                document.querySelector('#history-form button').disabled = false;
+
+               
+                document.querySelectorAll('.ticket-row').forEach(r => r.classList.remove('selected-ticket'));
+                this.classList.add('selected-ticket');
+            });
+        });
+    </script>
+    <style>
+        .ticket-row {
+            cursor: pointer;
         }
-    </tbody>
-</table>
+
+        .selected-ticket {
+            background-color: #A9A9A9;
+        }
+    </style>
+}
+

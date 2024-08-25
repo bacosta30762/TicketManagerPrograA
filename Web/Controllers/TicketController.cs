@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Business.Interfaces;
+﻿using Business.Interfaces;
 using Database.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Web.ViewModels.Tickets;
 
 namespace Web.Controllers
@@ -21,7 +19,7 @@ namespace Web.Controllers
 
         }
 
-           public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
 
             var user = await _userManager.GetUserAsync(User);
@@ -40,12 +38,15 @@ namespace Web.Controllers
 
             var ticketViewModels = tickets.Select(ticket => new TicketViewModel
             {
+                Id = ticket.Id,
                 Title = ticket.Title,
                 Description = ticket.Description,
                 CreatedBy = ticket.CreatedBy.Name,
                 CreatedDate = ticket.CreatedAt,
-                Status = ticket.Status, 
+                Status = ticket.Status,
             });
+
+            ViewBag.IsAdmin = isAdmin;
 
             return View(ticketViewModels);
         }
@@ -65,5 +66,47 @@ namespace Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Approve(int ticketId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _ticketService.ApproveAsync(userId, ticketId);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reject(int ticketId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await _ticketService.RejectAsync(userId, ticketId);
+            return RedirectToAction("Index");
+        }
+
+        /*[HttpGet]
+        public async Task<IActionResult> History(int ticketId)
+        {
+            var history = await _ticketService.ListHistoryAsync(ticketId);
+            return View("History", history);
+        }*/
+
+        [HttpGet]
+        public async Task<IActionResult> History(int ticketId)
+        {
+            var history = await _ticketService.ListHistoryAsync(ticketId);
+
+            var historyViewModels = history.Select(h => new HistoryViewModel
+            {
+                Id = h.Id,
+                TicketId = h.TicketId,
+                ChangeDescription = h.ChangeDescription,
+                CreatedAt = h.CreatedAt,
+                ChangedBy = h.ChangedBy?.UserName
+            });
+
+            return View(historyViewModels);
+        }
+
     }
+    
 }

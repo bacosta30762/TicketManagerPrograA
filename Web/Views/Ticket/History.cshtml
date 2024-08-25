@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Web.ViewModels.Tickets.HistoryViewModel>
+
+@{
+    ViewData["Title"] = "History";
+}
+
+<h2>Historial</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ticket ID</th>
+            <th>Descripción del Cambio</th>
+            <th>Fecha de Creación</th>
+            <th>Cambiado Por</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.TicketId</td>
+                <td>@item.ChangeDescription</td>
+                <td>@item.CreatedAt.ToString("g")</td>
+                <td>@item.ChangedBy</td>
+            </tr>
+        }
+    </tbody>
+</table>
