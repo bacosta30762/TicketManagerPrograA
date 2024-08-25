@@ -101,7 +101,7 @@ namespace Web.Controllers
                 TicketId = h.TicketId,
                 ChangeDescription = h.ChangeDescription,
                 CreatedAt = h.CreatedAt,
-                ChangedBy = h.ChangedBy?.UserName
+                ChangedBy = h.ChangedBy?.Name
             });
 
             return View(historyViewModels);

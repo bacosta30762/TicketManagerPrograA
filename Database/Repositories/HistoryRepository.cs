@@ -22,7 +22,7 @@ namespace Database.Repositories
 
         public async Task <IEnumerable<History>> ListAsync(int ticketid)
         {
-            var TicketHistory = await _context.TicketsHistory.Where(h => h.TicketId == ticketid)
+            var TicketHistory = await _context.TicketsHistory.Include(h => h.ChangedBy).Where(h => h.TicketId == ticketid)
                 .ToListAsync();
 
             return TicketHistory;
